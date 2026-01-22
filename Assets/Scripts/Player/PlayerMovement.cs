@@ -10,6 +10,27 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
     private Vector2 moveInput;
+
+    private void Awake()
+    {
+        if (rb == null)
+        {
+            rb = GetComponent<Rigidbody2D>();
+            if (rb == null)
+                Debug.LogWarning($"Rigidbody2D no asignado y no encontrado en '{gameObject.name}'. Asigna uno en el inspector.");
+        }
+
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+            if (animator == null)
+                animator = GetComponentInChildren<Animator>();
+
+            if (animator == null)
+                Debug.LogWarning($"Animator no asignado y no encontrado en '{gameObject.name}'. Asigna uno en el inspector.");
+        }
+    }
+
     void Start()
     {
         
@@ -35,7 +56,5 @@ public class PlayerMovement : MonoBehaviour
         moveInput = context.ReadValue<Vector2>();
         animator.SetFloat("inputX", moveInput.x);
         animator.SetFloat("inputY", moveInput.y);
-
-
     }
 }
